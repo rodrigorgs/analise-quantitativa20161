@@ -1,0 +1,102 @@
+---
+title: "Eclipse metrics"
+author: "Rodrigo Rocha"
+date: "15 de setembro de 2016"
+output: html_document
+---
+
+```{r}
+library(dplyr)
+
+# a <- read.csv('/tmp/eclipse-metrics-files-2.0.csv', sep=';')
+# a$version <- 2.0
+# b <- read.csv('/tmp/eclipse-metrics-files-2.1.csv', sep=';')
+# b$version <- 2.1
+# c <- read.csv('/tmp/eclipse-metrics-files-3.0.csv', sep=';')
+# c$version <- 3.0
+# 
+# pre <- rbind(a, b, c)
+# head(data, 0)
+# 
+# data <- pre %>%
+#   select(version, plugin, filename, pre, post, TLOC, NOF_sum, NOM_sum, VG_avg, PAR_avg, MLOC_avg, FOUT_avg)
+# 
+# write.csv(data, 'eclipse-metrics.csv')
+```
+
+```{r}
+data <- read.csv('eclipse-metrics.csv')
+
+```
+
+Qual o número de arquivos em cada versão? E o número de linhas de código? E a média de linhas de código por arquivo? E o número de plugins?
+
+```{r}
+data %>%
+  group_by(version) %>%
+  summarise(arquivos = n(),
+            plugins = n_distinct(plugin),
+            linhas = sum(TLOC),
+            linhasPorArquivo = linhas / arquivos)
+```
+
+Quantos arquivos aparecem em uma, duas ou três versões?
+
+```{r}
+data %>%
+  group_by(filename) %>%
+  summarise(versoes = n()) %>%
+  group_by(versoes) %>%
+  summarise(arquivos = n()) %>%
+  mutate(perc = 100 * arquivos / sum(arquivos))
+```
+
+Quais os 5 maiores plugins, em linhas de código, na versão 3.0?
+
+```{r}
+data %>%
+  filter(version == 3.0) %>%
+  group_by(plugin) %>%
+  summarise(loc = sum(TLOC)) %>%
+  arrange(desc(loc)) %>%
+  head(5)
+```
+
+Quais os plugins com maior densidade de defeitos (defeitos por mil linhas de código) na versão 3.0?
+
+```{r}
+data %>%
+  filter(version == 3.0) %>%
+  group_by(plugin) %>%
+  summarise(loc = sum(TLOC),
+            defeitos = sum(post),
+            densidade = 1000 * defeitos / loc) %>%
+  arrange(desc(densidade)) %>%
+  head(5)
+```
+
+Quais os arquivos com maior densidade de defeitos pós-release na versão 2.0?
+
+```{r}
+data %>%
+  filter(version == 2.0) %>%
+  mutate(densidade = post / TLOC) %>%
+  select(filename, densidade) %>%
+  arrange(desc(densidade)) %>%
+  head(5)
+```
+
+A densidade de defeitos aumentou ou diminuiu com o tempo?
+
+```{r}
+data %>%
+  group_by(version) %>%
+  summarise(loc = sum(TLOC),
+            defeitos = sum(post),
+            densidade = 1000 * defeitos / loc) %>%
+  select(version, densidade) %>%
+  arrange(version)
+  
+```
+
+

@@ -1,0 +1,30 @@
+---
+title: "22 de setembro"
+author: "Rodrigo Rocha"
+date: "22 de setembro de 2016"
+output: html_document
+---
+
+```{r echo=FALSE, message=FALSE}
+library(dplyr)
+library(pander)
+
+f <- gzfile('data/eclipse-metrics.csv.gz')
+open(f)
+eclipse <- read.csv(f) %>% select(versao = version, tamanho = TLOC)
+close(f)
+
+#dados <- read.csv('data/tamanhos.txt')
+dados <- eclipse
+
+x <- dados %>% group_by(versao) %>% summarise(total = sum(tamanho))
+prox <- tail(x$total, nrow(x) - 1) %>% c(NA)
+x <- x %>%
+  mutate(totalprox = prox,
+         dif = totalprox - total,
+         perc = sprintf("%.2f", 100 * dif / total)) %>%
+  select(versao, perc)
+
+pander(x)
+```
+
