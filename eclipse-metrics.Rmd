@@ -5,29 +5,48 @@ date: "15 de setembro de 2016"
 output: html_document
 ---
 
-```{r}
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+## Preparação
+
+```{r message=FALSE}
 library(dplyr)
-
-# a <- read.csv('/tmp/eclipse-metrics-files-2.0.csv', sep=';')
-# a$version <- 2.0
-# b <- read.csv('/tmp/eclipse-metrics-files-2.1.csv', sep=';')
-# b$version <- 2.1
-# c <- read.csv('/tmp/eclipse-metrics-files-3.0.csv', sep=';')
-# c$version <- 3.0
-# 
-# pre <- rbind(a, b, c)
-# head(data, 0)
-# 
-# data <- pre %>%
-#   select(version, plugin, filename, pre, post, TLOC, NOF_sum, NOM_sum, VG_avg, PAR_avg, MLOC_avg, FOUT_avg)
-# 
-# write.csv(data, 'eclipse-metrics.csv')
+library(pander)
 ```
+
+Primeiramente, vamos carregar os dados do artigo [Predicting Defects for Eclipse](https://www.st.cs.uni-saarland.de/publications/files/zimmermann-promise-2007.pdf).
 
 ```{r}
-data <- read.csv('eclipse-metrics.csv')
-
+data <- read.csv(gzfile('data/eclipse-metrics.csv.gz'))
 ```
+
+Eis uma pequena amostra dos dados:
+
+```{r}
+data %>% head() %>% pander()
+```
+
+Cada linha representa informações sobre um arquivo em uma determinada versão do software Eclipse.
+
+Significado das colunas:
+
+- **version**: versão do Eclipse
+- **plugin**: plugin ao qual o arquivo pertence
+- **filename**: nome do arquivo
+- **pre**: número de defeitos encontrados no arquivo antes do lançamento da versão (pré-release)
+- **post**: número de defeitos encontrados no arquivo após o lançamento da versão (pós-release)
+- **TLOC**: número de linhas de código do arquivo
+- **NOF\_sum**: número total de atributos das classes do arquivo
+- **NOM\_sum**: número total de métodos das classes do arquivo
+- **VG\_avg**: complexidade ciclomática média dos métodos das classes do arquivo
+- **PAR\_avg**: número de parâmetros médio dos métodos das classes do arquivo
+- **MLOC\_avg**: tamanho médio dos métodos das classes do arquivo, em linhas de código
+- **FOUT\_avg**: número médio de chamadas de método dentro de cada método das classes do arquivo (*fan-out*)
+
+## Análises
 
 Qual o número de arquivos em cada versão? E o número de linhas de código? E a média de linhas de código por arquivo? E o número de plugins?
 
@@ -37,7 +56,8 @@ data %>%
   summarise(arquivos = n(),
             plugins = n_distinct(plugin),
             linhas = sum(TLOC),
-            linhasPorArquivo = linhas / arquivos)
+            linhasPorArquivo = linhas / arquivos) %>%
+  pander()
 ```
 
 Quantos arquivos aparecem em uma, duas ou três versões?
@@ -48,7 +68,8 @@ data %>%
   summarise(versoes = n()) %>%
   group_by(versoes) %>%
   summarise(arquivos = n()) %>%
-  mutate(perc = 100 * arquivos / sum(arquivos))
+  mutate(perc = 100 * arquivos / sum(arquivos)) %>%
+  pander()
 ```
 
 Quais os 5 maiores plugins, em linhas de código, na versão 3.0?
@@ -59,7 +80,8 @@ data %>%
   group_by(plugin) %>%
   summarise(loc = sum(TLOC)) %>%
   arrange(desc(loc)) %>%
-  head(5)
+  head(5) %>%
+  pander()
 ```
 
 Quais os plugins com maior densidade de defeitos (defeitos por mil linhas de código) na versão 3.0?
@@ -72,7 +94,8 @@ data %>%
             defeitos = sum(post),
             densidade = 1000 * defeitos / loc) %>%
   arrange(desc(densidade)) %>%
-  head(5)
+  head(5) %>%
+  pander()
 ```
 
 Quais os arquivos com maior densidade de defeitos pós-release na versão 2.0?
@@ -83,7 +106,8 @@ data %>%
   mutate(densidade = post / TLOC) %>%
   select(filename, densidade) %>%
   arrange(desc(densidade)) %>%
-  head(5)
+  head(5) %>%
+  pander()
 ```
 
 A densidade de defeitos aumentou ou diminuiu com o tempo?
@@ -95,8 +119,8 @@ data %>%
             defeitos = sum(post),
             densidade = 1000 * defeitos / loc) %>%
   select(version, densidade) %>%
-  arrange(version)
-  
+  arrange(version) %>%
+  pander()
 ```
 
 
