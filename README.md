@@ -11,13 +11,15 @@ Este repositório contém o código-fonte e os dados utilizados na disciplina de
 		- [Quick-R](http://statmethods.net/) (site com material de referência)
 		- [The Art of R Programming](http://heather.cs.ucdavis.edu/~matloff/132/NSPpart.pdf) (livro sobre R como linguagem de programação)
 		- [R in Action](https://www.manning.com/books/r-in-action-second-edition) (livro do autor do site Quick-R)
+- Aula 3: Probabilidade e estimativa (aula no quadro)
+- Aula 4: Testes de hipótese: [documento](http://rpubs.com/rodrigorgs/testes-de-hipotese), [código-fonte](aula4-inferencia.Rmd).
 
 ## Trabalho prático
 
 - Análise do dataset TravisTorrent, disponibilizado no [MSR Challenge 2017](http://2017.msrconf.org/#/challenge).
 - Os resultados devem ser escritos no formato [R Markdown](http://rmarkdown.rstudio.com/) (extensão `.Rmd`) e publicados no [RPubs](https://rpubs.com/).
 - Seções:
-  - Introdução: motivação
+  - Introdução: motivação, duas questões de pesquisa relacionadas
   - Metodologia: (coleta, transformação e análise)
   - Resultados: (análise exploratória e análise; ameaças)
   - Conclusão: (impactos, limitações, trabalhos futuros)
