@@ -13,6 +13,7 @@ Este repositório contém o código-fonte e os dados utilizados na disciplina de
 		- [R in Action](https://www.manning.com/books/r-in-action-second-edition) (livro do autor do site Quick-R)
 - Aula 3: Probabilidade e estimativa (aula no quadro)
 - Aula 4: Testes de hipótese: [documento](http://rpubs.com/rodrigorgs/testes-de-hipotese), [código-fonte](aula4-inferencia.Rmd).
+- Aula 5: Correlação e regressão: [slides](http://rpubs.com/rodrigorgs/correlacao-regressao), [código-fonte](aula5-regressao.Rmd)
 
 ## Trabalho prático
 
