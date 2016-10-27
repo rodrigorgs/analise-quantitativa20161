@@ -46,6 +46,15 @@ survey30 <- survey %>% sample_n(30)
   - Indica que a relação entre as variáveis é uma equação linear (1o grau):
   - Ex.: para variáveis x e y, `y = a*x + b` (onde a e b são constantes)
 
+## Força da correlação
+
+- De acordo com seu valor, a correlação pode ser:
+  - -1.0 a -0.5 ou 1.0 a 0.5: Forte
+  - -0.5 a -0.3 ou 0.3 a 0.5: Moderada
+  - -0.3 a -0.1 ou 0.1 a 0.3: Fraca
+  - -0.1 a 0.1: Muito fraca ou nenhuma
+- Essa classificação é subjetiva. Você pode encontrar outros valores em outros lugares.
+
 ## Correlação linear
 
 ![](https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Correlation_examples2.svg/506px-Correlation_examples2.svg.png)
