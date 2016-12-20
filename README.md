@@ -4,7 +4,7 @@ Este repositório contém o código-fonte e os dados utilizados na disciplina de
 
 ## Material de apoio
 
-- Aula 1: Introdução à análise quantitativa de dados: [slides](http://rpubs.com/rodrigorgs/analise-quantitativa), [código-fonte](slides.Rmd)
+- Aula 1: Introdução à análise quantitativa de dados: [slides](http://rpubs.com/rodrigorgs/analise-quantitativa), [código-fonte](aula1-intro.Rmd)
 - Aula 2: Introdução à linguagem R: [documento](http://rpubs.com/rodrigorgs/intro-r), [código-fonte](intro.Rmd).
 	- Material adicional sobre R:
 		- [Try R](http://tryr.codeschool.com/) (tutorial interativo)
